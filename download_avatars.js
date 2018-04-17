@@ -22,7 +22,14 @@ function getRepoContributors(repoOwner, repoName, cb) {
 }
 
 //this function loops through the Github avatars and outputs each URL and filepath to the function downloadImagebyURL
-getRepoContributors("jquery", "jquery", function(err, result) {
+getRepoContributors(process.argv[2], process.argv[3], function(err, result) {
+  if(!process.argv[2] && !process.argv[3]) {
+    return console.log("Input error: missing repoOwner and repoName");
+  }
+  else if(!process.argv[3]) {
+    return console.log("Input error: missing repoName");
+  }
+
   console.log("Errors:", err);
   result.forEach(function(element) {
     var avatarURL = element.avatar_url;
