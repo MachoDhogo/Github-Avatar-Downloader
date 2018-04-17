@@ -32,8 +32,31 @@ getRepoContributors("jquery", "jquery", function(err, result) {
   // console.log("Result:", result);
   result.forEach(function(element){
     console.log(element.avatar_url)
-})
+  })
 });
+
+
+var request = require('request');
+var fs = require('fs');
+
+function downloadImageByURL(url, filePath) {
+  request.get(url + filePath) //request.get equivalent to request()
+    .on('error', function(err) {
+      throw err;  //request.on('error', callback handles any error)
+    })
+
+    .on('response', function (response) {
+      console.log(response.statusCode + " " + response.statusMessage + " " + response.headers['content-type']);
+    })
+
+    .on('end', function(){
+      console.log('Downloading complete.');
+    })
+
+.pipe(fs.createWriteStream('./avatar.jpg')); //handles incoming readable data stream, transforms to write stream, then creates a future.jpg into local directory and streams data into it
+}
+
+downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "avatars/kvirani.jpg");
 
 
 
